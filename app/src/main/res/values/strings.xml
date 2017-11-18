@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">SurveyApp</string>
+    <string name="survey_question_string">Are you awesome?!</string>
+    <string name="yes_results">There were XX Yes\'s</string>
+    <string name="no_results">There were XX No\'s</string>
+    <string name="yesBtn">Yes</string>
+    <string name="noBtn">No</string>
+    <string name="createBtn">Create New Survey</string>
+</resources>

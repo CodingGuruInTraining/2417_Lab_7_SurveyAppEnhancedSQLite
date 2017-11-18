@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.hl4350hb.surveyapp.ResultsActivity">
+
+
+    <TextView
+        android:id="@+id/yeses"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/yes_results"
+        android:layout_marginBottom="78dp"
+        android:layout_above="@+id/noes"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:id="@+id/noes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/no_results"
+        android:layout_centerVertical="true"
+        android:layout_alignRight="@+id/yeses"
+        android:layout_alignEnd="@+id/yeses"/>
+
+    <Button
+        android:id="@+id/reset_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="RESET"
+        android:layout_alignBaseline="@+id/continue_button"
+        android:layout_alignBottom="@+id/continue_button"
+        android:layout_toLeftOf="@+id/noes"
+        android:layout_toStartOf="@+id/noes"/>
+
+    <Button
+        android:id="@+id/continue_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CONTINUE"
+        android:layout_below="@+id/noes"
+        android:layout_toRightOf="@+id/noes"
+        android:layout_toEndOf="@+id/noes"
+        android:layout_marginTop="19dp"/>
+
+</RelativeLayout>
