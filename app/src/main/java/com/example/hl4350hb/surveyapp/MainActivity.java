@@ -35,10 +35,15 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Main
     // Static variable to hold main fragment object.
     protected MainFragment mMainFragment;
 
+    private DatabaseManager dbManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Create database manager.
+        dbManager = new DatabaseManager(this);
 
         // Checks if bundle exists.
         if (savedInstanceState != null) {
@@ -143,7 +148,24 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Main
     }
 
 
+// DATABASE OVERRIDES:
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // Close database on Activity pauses.
+        dbManager.close();
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Reconnect as Activity resumes.
+        dbManager = new DatabaseManager(this);
+    }
+
+
+
+// CUSTOM METHODS:
     // Custom method to reset counters.
     private void resetCounts() {
         // Resets counters.
