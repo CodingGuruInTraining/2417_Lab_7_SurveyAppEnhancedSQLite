@@ -1,7 +1,9 @@
 package com.example.hl4350hb.surveyapp;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -45,6 +47,21 @@ public class DatabaseManager {
         return cursor;
     }
 
+    public boolean addSurvey(String qu, String opt1, String opt2, int count1, int count2) {
+        ContentValues values = new ContentValues();
+        values.put(QUESTION_COL, qu);
+        values.put(OPT1_COL, opt1);
+        values.put(OPT2_COL, opt2);
+        values.put(OPT1_COUNT_COL, count1);
+        values.put(OPT2_COUNT_COL, count2);
+
+        try {
+            db.insertOrThrow(DB_TABLE, null, values);
+            return true;
+        } catch (SQLiteConstraintException err) {
+            return false;
+        }
+    }
 
 
 

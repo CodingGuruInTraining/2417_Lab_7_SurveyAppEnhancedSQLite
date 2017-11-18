@@ -3,6 +3,7 @@
 package com.example.hl4350hb.surveyapp;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -56,6 +57,26 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Main
 
             FragmentManager fm = getSupportFragmentManager();
             FragmentTransaction ft = fm.beginTransaction();
+
+
+            Cursor cursor = dbManager.getCursorAll();
+            if (cursor.getCount() > 0) {
+// TODO perhaps should wrap this stuff in a function
+                cursor.moveToLast();
+                for (int x = 0; x < 1; x++) {
+                    question = cursor.getString(1);
+                    option1 = cursor.getString(2);
+                    option2 = cursor.getString(3);
+                    yesCount = cursor.getInt(4);
+                    noCount = cursor.getInt(5);
+                }
+                Bundle bundle = new Bundle();
+                String[] surveyStrings = {question, option1, option2};
+                bundle.putStringArray(NEW_SURVEY_KEY, surveyStrings);
+
+                mMainFragment.setArguments(bundle);
+            }
+
 
             // Adds fragment to activity to be seen.
             ft.add(R.id.main_container, mMainFragment, MAIN_FRAG_TAG);
@@ -132,6 +153,14 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Main
         option2 = newSurvey[2];
         // Resets the counts since this is now a new survey.
         resetCounts();
+
+
+
+        if (dbManager.addSurvey(question, option1, option2, yesCount, noCount)) {
+
+        }
+
+
 
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
