@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements MainFragment.MainScreenListener,
         ResultsActivity.ResultScreenListener,
@@ -61,22 +62,20 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Main
 
             Cursor cursor = dbManager.getCursorAll();
             if (cursor.getCount() > 0) {
-// TODO perhaps should wrap this stuff in a function
                 cursor.moveToLast();
-                for (int x = 0; x < 1; x++) {
-                    question = cursor.getString(1);
-                    option1 = cursor.getString(2);
-                    option2 = cursor.getString(3);
-                    yesCount = cursor.getInt(4);
-                    noCount = cursor.getInt(5);
-                }
+                // Updates global variables.
+                question = cursor.getString(1);
+                option1 = cursor.getString(2);
+                option2 = cursor.getString(3);
+                yesCount = cursor.getInt(4);
+                noCount = cursor.getInt(5);
+
                 Bundle bundle = new Bundle();
                 String[] surveyStrings = {question, option1, option2};
                 bundle.putStringArray(NEW_SURVEY_KEY, surveyStrings);
 
                 mMainFragment.setArguments(bundle);
             }
-
 
             // Adds fragment to activity to be seen.
             ft.add(R.id.main_container, mMainFragment, MAIN_FRAG_TAG);
@@ -108,6 +107,7 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Main
         } else {
             noCount++;
         }
+        dbManager.updateSurvey(question, yesCount, noCount);
         loadResultsFragment();
     }
 
@@ -120,6 +120,7 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Main
         // Reset the scores.
         if (resetCounts) {
             resetCounts();
+            dbManager.updateSurvey(question, 0, 0);
         }
         // Loads main fragment.
         ft.replace(R.id.main_container, mMainFragment);
@@ -154,13 +155,10 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Main
         // Resets the counts since this is now a new survey.
         resetCounts();
 
-
-
-        if (dbManager.addSurvey(question, option1, option2, yesCount, noCount)) {
-
+        // Adds new values to database.
+        if (!dbManager.addSurvey(question, option1, option2, yesCount, noCount)) {
+            Toast.makeText(this, "Problem with database", Toast.LENGTH_SHORT).show();
         }
-
-
 
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
